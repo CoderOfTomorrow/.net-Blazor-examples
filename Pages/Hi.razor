@@ -1,0 +1,68 @@
+﻿@page "/hi"
+
+
+<div class="calculator card">
+
+    <input type="text" class="calculator-screen z-depth-1" value="@txt" disabled />
+
+    <div class="calculator-keys">
+
+        <button type="button" class="operator btn btn-info" @onclick="@(e=>AddString("+"))">+</button>
+        <button type="button" class="operator btn btn-info" @onclick="@(e=>AddString("-"))">-</button>
+        <button type="button" class="operator btn btn-info" @onclick="@(e=>AddString("*"))">&times;</button>
+        <button type="button" class="operator btn btn-info" @onclick="@(e=>AddString("/"))">&divide;</button>
+
+        <button type="button" @onclick="@(e=>AddString("7"))" class="btn btn-light waves-effect">7</button>
+        <button type="button" @onclick="@(e=>AddString("8"))" class="btn btn-light waves-effect">8</button>
+        <button type="button" @onclick="@(e=>AddString("9"))" class="btn btn-light waves-effect">9</button>
+
+
+        <button type="button" @onclick="@(e=>AddString("4"))" class="btn btn-light waves-effect">4</button>
+        <button type="button" @onclick="@(e=>AddString("5"))" class="btn btn-light waves-effect">5</button>
+        <button type="button" @onclick="@(e=>AddString("6"))" class="btn btn-light waves-effect">6</button>
+
+
+        <button type="button" @onclick="@(e=>AddString("1"))" class="btn btn-light waves-effect">1</button>
+        <button type="button" @onclick="@(e=>AddString("2"))" class="btn btn-light waves-effect">2</button>
+        <button type="button" @onclick="@(e=>AddString("3"))" class="btn btn-light waves-effect">3</button>
+
+
+        <button type="button" @onclick="@(e=>AddString("0"))" class="btn btn-light waves-effect">0</button>
+        <button type="button" @onclick="@(e=>AddString("."))" class="decimal function btn btn-secondary">.</button>
+        <button type="button" @onclick=Clear class="all-clear function btn btn-danger btn-sm">AC</button>
+
+        <button type="button" @onclick=Result class="equal-sign operator btn btn-danger">=</button>
+
+    </div>
+</div>
+
+@code {
+    protected string txt = null;
+
+    public void AddString(string MyInput)
+    {
+        txt = txt + MyInput;
+    }
+
+    public void Clear()
+    {
+        txt = null;
+    }
+
+    public void Result()
+    {
+        if (txt.Last() == '*' || txt.Last() == '/' || txt.Last() == '+' || txt.Last() == '-')
+        {
+            txt = "Error";
+
+            
+        }
+        else
+        {
+            MathParser mp = new MathParser();
+            var new_txt = mp.Calculate(txt);
+            txt = new_txt.ToString();
+        }
+    }
+
+}
