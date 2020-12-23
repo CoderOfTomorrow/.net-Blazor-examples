@@ -1,0 +1,89 @@
+﻿
+@{
+    if (gameStatus == TicTacToeStatus.GameStatus.X_wins)
+    {
+        status = "Winner: X";
+    }
+    else if (gameStatus == TicTacToeStatus.GameStatus.O_wins)
+    {
+        status = "Winner: O";
+    }
+    else if (gameStatus == TicTacToeStatus.GameStatus.Draw)
+    {
+        status = "Draw !";
+    }
+    else
+    {
+        char nextPlayer = xIsNext ? 'X' : 'O';
+        status = $"Next player: {nextPlayer}";
+    }
+    <h3>@status</h3>
+}
+
+<div class="board">
+    @for (int i = 0; i < 9; i++)
+    {
+        int squareNumber = i;
+        <Square @key=squareNumber
+                value=values[squareNumber]
+                ClickHandler="@(() => HandleClick(squareNumber))" />
+    }
+</div>
+
+<button class="btn btn-light" @onclick=NewGame>Restart</button>
+
+@code{
+    private TicTacToeStatus.GameStatus gameStatus = TicTacToeStatus.GameStatus.NotYetFiniched;
+    private string status;
+    private bool xIsNext;
+    private char[] values = new char[9];
+
+    protected override Task OnInitializedAsync()
+    {
+        NewGame();
+        return base.OnInitializedAsync();
+    }
+
+    private void HandleClick(int i)
+    {
+        
+        bool isGameFiniched = TicTacToeStatus.CalculateGameStatus(values) != TicTacToeStatus.GameStatus.NotYetFiniched;
+        if (isGameFiniched || values[i] != ' ')
+        {
+            return;
+        }
+
+        values[i] = xIsNext ? 'X' : 'O';
+        xIsNext = !xIsNext;
+        gameStatus = TicTacToeStatus.CalculateGameStatus(values);
+    }
+
+    private void NewGame()
+    {
+        values = new char[9]
+        {
+        ' ', ' ', ' ',
+        ' ', ' ', ' ',
+        ' ', ' ', ' '
+            };
+        xIsNext = true;
+    }
+
+    private void RestartGame()
+    {
+
+        NewGame();
+    }
+}
+
+<style scoped>
+    .board {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        background-color: #0a8efa;
+        padding: 10px;
+        width: 300px;
+        height: 300px;
+        border-radius: 5%;
+    }
+</style>
