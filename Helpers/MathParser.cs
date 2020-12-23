@@ -11,7 +11,7 @@ namespace blazor_Examples.Helpers
     public class MathParser
     {
         private Dictionary<Parameters, decimal> _Parameters = new Dictionary<Parameters, decimal>();
-        private List<String> OperationOrder = new List<string>();
+        private readonly List<String> OperationOrder = new List<string>();
 
         public Dictionary<Parameters, decimal> Parameters
         {
@@ -89,14 +89,14 @@ namespace blazor_Examples.Helpers
                 }
             }
             arr.Add(s);
-            s = "";
+            
             foreach (string op in OperationOrder)
             {
                 while (arr.IndexOf(op) > -1)
                 {
                     int operatorIndex = arr.IndexOf(op);
                     decimal digitBeforeOperator = Convert.ToDecimal(arr[operatorIndex - 1]);
-                    decimal digitAfterOperator = 0;
+                    decimal digitAfterOperator;
                     if (arr[operatorIndex + 1].ToString() == "-")
                     {
                         arr.RemoveAt(operatorIndex + 1);
