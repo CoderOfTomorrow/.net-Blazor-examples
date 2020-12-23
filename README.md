@@ -3,4 +3,5 @@
 @using Blazor WebAssembly
 
 Features :\
-#...
+#Timer\
+#Calculator
