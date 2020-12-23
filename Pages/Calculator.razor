@@ -51,17 +51,19 @@
 
     public void Result()
     {
-        if (txt.Last() == '*' || txt.Last() == '/' || txt.Last() == '+' || txt.Last() == '-')
+        if (!string.IsNullOrEmpty(txt))
         {
-            txt = "Error";
+            if (txt.Last() == '*' || txt.Last() == '/' || txt.Last() == '+' || txt.Last() == '-' || txt.Last() == '.')
+            {
+                txt = "Error";
 
-            
-        }
-        else
-        {
-            MathParser mp = new MathParser();
-            var new_txt = mp.Calculate(txt);
-            txt = new_txt.ToString();
+            }
+            else
+            {
+                MathParser mp = new MathParser();
+                var new_txt = mp.Calculate(txt);
+                txt = new_txt.ToString();
+            }
         }
     }
 
