@@ -4,5 +4,5 @@
 
 Features :\
 #Timer\
-#Calculatorâ
+#Calculator\
 #TicTacToe
