@@ -3,6 +3,12 @@
 @using Blazor WebAssembly
 
 Features :\
+
+<< - GAMES - >>\
+#TicTacToe\
+#Snake\
+
+<< - OTHERS - >>\
 #Timer\
-#Calculator\
-#TicTacToe
+#Calculator
+
