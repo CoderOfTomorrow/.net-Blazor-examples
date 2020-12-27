@@ -8,45 +8,68 @@
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All" @onclick="@(()=>IsClicked(Categories.home))">
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </li>
+
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="calculator">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Calculator
+            <NavLink class="nav-link" href="games" @onclick="@(()=>IsClicked(Categories.games))">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Games
             </NavLink>
+            @if (status == Categories.games)
+            {
+                <ul class="nav flex-column">
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="games/tictactoe">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Tic Tac Toe
+                        </NavLink>
+                     </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="games/snake">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Snake
+                        </NavLink>
+                    </li>
+                </ul>
+            }
         </li>
+
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="tictactoe">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Tic Tac Toe
+            <NavLink class="nav-link" href="others" @onclick="@(()=>IsClicked(Categories.others))">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Others
             </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="timer">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Timer
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="snake">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Snake
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="change_bg">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Change Bg Color
-            </NavLink>
+            @if (status == Categories.others)
+            {
+                <ul class="nav flex-column">
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="others/timer">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Timer
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="others/calculator">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Calculator
+                        </NavLink>
+                    </li>
+                </ul>
+            }
         </li>
     </ul>
 </div>
 
 @code {
     private bool collapseNavMenu = true;
-
+    private enum Categories {home, games, others}
+    private Categories status = Categories.home;
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void IsClicked(Categories categories)
+    {
+        status = categories;
     }
 }

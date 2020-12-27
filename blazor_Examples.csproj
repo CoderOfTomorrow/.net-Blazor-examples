@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Helpers\MathParser.cs" />
+    <Content Include="Components\Calculator\Helpers\MathParser.cs" />
   </ItemGroup>
 
   <ItemGroup>

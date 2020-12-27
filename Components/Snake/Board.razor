@@ -28,7 +28,9 @@
     private Directions vector = Directions.Right;
     private TargetBody target = new TargetBody();
     private List<SnakeBody> snake = new List<SnakeBody> {
-        new SnakeBody{ Id=100}
+        new SnakeBody{ Id=100}, new SnakeBody(), new SnakeBody(), new SnakeBody(), new SnakeBody(), new SnakeBody()
+        , new SnakeBody(), new SnakeBody(), new SnakeBody(), new SnakeBody(), new SnakeBody(), new SnakeBody()
+        , new SnakeBody(), new SnakeBody(), new SnakeBody(), new SnakeBody(), new SnakeBody(), new SnakeBody()
     };
     Random random = new Random();
     private int lastX, lastY, xLast, yLast;
@@ -71,6 +73,7 @@
                         case Directions.Top: obj.yCoord -= 10; break;
                         default: break;
                     }
+                    CheckPosition();
                     xLast = obj.xCoord;
                     yLast = obj.yCoord;
 
@@ -86,6 +89,7 @@
 
                 }
             }
+
         }
     }
 
@@ -108,6 +112,15 @@
             }
 
             targetStatus = true;
+        }
+    }
+
+    private void CheckPosition()
+    {
+        for(int i=1;i<snake.Count;i++)
+        {
+            if (snake[0].xCoord == snake[i].xCoord && snake[0].yCoord == snake[i].yCoord)
+                status = false;
         }
     }
 }

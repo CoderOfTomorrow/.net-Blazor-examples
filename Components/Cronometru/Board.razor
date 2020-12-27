@@ -1,24 +1,23 @@
-﻿@page "/timer"
-
-    <div class="calculator card">
-
-        
-        <h2 class="calculator-screen z-depth-1" >@ts.ToString(@"hh\:mm\:ss")</h2>
-        <button @onclick=Start>Start</button>
-        <button @onclick=Record>Record</button>
-        <button @onclick=Clear>Clear</button>
+﻿
+<div class="calculator card">
 
 
-        @if (list.Count>0)
-        {
-            <ul class="list-group" style="overflow:auto; height:190px; width:400px;">
-                @foreach (var data in list)
-                {
-                    <li class="list-group-item">@data.ToString(@"hh\:mm\:ss")</li>
-                }
-            </ul>
-        }
-    </div>
+    <h2 class="calculator-screen z-depth-1">@ts.ToString(@"hh\:mm\:ss")</h2>
+    <button @onclick=Start>Start</button>
+    <button @onclick=Record>Record</button>
+    <button @onclick=Clear>Clear</button>
+
+
+    @if (list.Count > 0)
+    {
+        <ul class="list-group" style="overflow:auto; height:190px; width:400px;">
+            @foreach (var data in list)
+            {
+                <li class="list-group-item">@data.ToString(@"hh\:mm\:ss")</li>
+            }
+        </ul>
+    }
+</div>
 
 @code{
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace blazor_Examples.Helpers
+﻿namespace blazor_Examples.Components.TicTacToe.Helpers
 {
     public static class TicTacToeStatus
     {

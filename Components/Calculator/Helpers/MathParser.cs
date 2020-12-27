@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections;
 
-namespace blazor_Examples.Helpers
+namespace blazor_Examples.Components.Calculator.Helpers
 {
     public enum Parameters
     {
