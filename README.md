@@ -6,7 +6,7 @@ Features :\
 
 << - GAMES - >>\
 #TicTacToe\
-#Snake\
+#Snake
 
 << - OTHERS - >>\
 #Timer\
