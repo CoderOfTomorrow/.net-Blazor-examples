@@ -2,6 +2,7 @@
 
 <div class="container" @onkeypress=KeyValue @onkeyup=KeyValue>
     <div class="board">
+        <h5>@gameStatus</h5>
         @if (status)
         {
             foreach(var obj in snake)
@@ -11,13 +12,14 @@
 
             if (targetStatus)
             {
-                <Square Status=targetStatus Target=target />
+                <TargetObject Status=targetStatus Target=target />
             }
         }
     </div>
 
     <br />
-    <button class="btn" @onclick=NewGame>Start</button>
+    <button class="btn btn-info" @onclick=NewGame>Start</button>
+    <button class="btn btn-info" @onclick=StopGame>Pause</button>
 </div>
 
 
@@ -25,22 +27,32 @@
 @code {
     private bool status;
     private bool targetStatus;
+    private int lastX, lastY, xLast, yLast;
     private Directions vector = Directions.Right;
     private TargetBody target = new TargetBody();
-    private List<SnakeBody> snake = new List<SnakeBody> {
-        new SnakeBody{ Id=100}, new SnakeBody(), new SnakeBody(), new SnakeBody(), new SnakeBody(), new SnakeBody()
-        , new SnakeBody(), new SnakeBody(), new SnakeBody(), new SnakeBody(), new SnakeBody(), new SnakeBody()
-        , new SnakeBody(), new SnakeBody(), new SnakeBody(), new SnakeBody(), new SnakeBody(), new SnakeBody()
+    private List<SnakeBody> snake = new List<SnakeBody>
+    {
+        new SnakeBody{ Id=100}
     };
     Random random = new Random();
-    private int lastX, lastY, xLast, yLast;
+    private string gameStatus;
 
     private void NewGame()
     {
-        status = true;
-        targetStatus = true;
-        _ = Task.Run(() => ChangeSnakePosition());
-        _ = Task.Run(() => GenerateTarget());
+        if (!status)
+        {
+            status = true;
+            targetStatus = true;
+            gameStatus = "";
+            _ = Task.Run(() => ChangeSnakePosition());
+            _ = Task.Run(() => GenerateTarget());
+        }
+    }
+
+    private void StopGame()
+    {
+        status = false;
+        snake = new List<SnakeBody> { new SnakeBody { Id = 100 } };
     }
 
     private void KeyValue(KeyboardEventArgs args)
@@ -120,7 +132,10 @@
         for(int i=1;i<snake.Count;i++)
         {
             if (snake[0].xCoord == snake[i].xCoord && snake[0].yCoord == snake[i].yCoord)
-                status = false;
+            {
+                gameStatus = "You lost";
+                StopGame();
+            }
         }
     }
 }
