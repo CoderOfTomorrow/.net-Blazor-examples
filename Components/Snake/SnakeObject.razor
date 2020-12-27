@@ -1,0 +1,53 @@
+﻿
+@using blazor_Examples.Components.Snake.Models
+
+<div class="object" style="@position"></div>
+
+@code {
+    [Parameter]
+    public SnakeBody SnakeBody { get; set; }
+    [Parameter]
+    public bool Status { get; set; }
+
+    private string xCoord, yCoord, position;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ChangePosition();
+    }
+
+
+    private async Task ChangePosition()
+    {
+        while(Status)
+        {
+            await Task.Delay(200);
+            CheckPosition();
+            xCoord = SnakeBody.xCoord.ToString() + "px";
+            yCoord = SnakeBody.yCoord.ToString() + "px";
+            position = "left:" + xCoord + ";top:" + yCoord + ';';
+            StateHasChanged();
+        }
+    }
+
+    private void CheckPosition()
+    {
+        if (SnakeBody.xCoord > 290)
+            SnakeBody.xCoord = 0;
+        if (SnakeBody.yCoord > 290)
+            SnakeBody.yCoord = 0;
+        if (SnakeBody.xCoord < 0)
+            SnakeBody.xCoord = 290;
+        if (SnakeBody.yCoord < 0)
+            SnakeBody.yCoord = 290;
+    }
+}
+
+<style scoped>
+    .object {
+        position : absolute;
+        background-color: black;
+        width: 10px;
+        height: 10px;
+    }
+</style>

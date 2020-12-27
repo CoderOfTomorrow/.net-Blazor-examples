@@ -1,0 +1,41 @@
+﻿@using blazor_Examples.Components.Snake.Models
+
+    <div class="square"></div>
+
+@code {
+    [Parameter]
+    public TargetBody Target { get; set; }
+    [Parameter]
+    public bool Status { get; set; }
+
+    public string xCoord, yCoord;
+
+    protected override Task OnInitializedAsync()
+    {
+        GenerateObject();
+        return base.OnInitializedAsync();
+    }
+
+    private async void GenerateObject()
+    {
+        while (Status)
+        {
+            xCoord = Target.XCoord.ToString() + "px";
+            yCoord = Target.YCoord.ToString() + "px";
+            StateHasChanged();
+            await Task.Delay(4500);
+        }
+    }
+
+}
+
+<style scoped>
+    .square {
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.8);
+        width: 10px;
+        height: 10px;
+        top: @yCoord;
+        left: @xCoord;
+    }
+</style>

@@ -1,0 +1,123 @@
+﻿@using blazor_Examples.Components.Snake.Models
+
+<div class="container" @onkeypress=KeyValue @onkeyup=KeyValue>
+    <div class="board">
+        @if (status)
+        {
+            foreach(var obj in snake)
+            {
+                <SnakeObject Status=status SnakeBody=obj/>
+            }
+
+            if (targetStatus)
+            {
+                <Square Status=targetStatus Target=target />
+            }
+        }
+    </div>
+
+    <br />
+    <button class="btn" @onclick=NewGame>Start</button>
+</div>
+
+
+
+@code {
+    private bool status;
+    private bool targetStatus;
+    private Directions vector = Directions.Right;
+    private TargetBody target = new TargetBody();
+    private List<SnakeBody> snake = new List<SnakeBody> {
+        new SnakeBody{ Id=100}
+    };
+    Random random = new Random();
+    private int lastX, lastY, xLast, yLast;
+
+    private void NewGame()
+    {
+        status = true;
+        targetStatus = true;
+        _ = Task.Run(() => ChangeSnakePosition());
+        _ = Task.Run(() => GenerateTarget());
+    }
+
+    private void KeyValue(KeyboardEventArgs args)
+    {
+        if (args.Code == "ArrowDown" && vector != Directions.Top)
+            vector = Directions.Down;
+        if (args.Code == "ArrowUp" && vector != Directions.Down)
+            vector = Directions.Top;
+        if (args.Code == "ArrowLeft" && vector != Directions.Right)
+            vector = Directions.Left;
+        if (args.Code == "ArrowRight" && vector != Directions.Left)
+            vector = Directions.Right;
+    }
+
+    public async Task ChangeSnakePosition()
+    {
+
+        while (status)
+        {
+            await Task.Delay(200);
+            foreach (var obj in snake) {
+                if (obj.Id==100)
+                {
+
+                    switch (vector)
+                    {
+                        case Directions.Left: obj.xCoord -= 10; break;
+                        case Directions.Right: obj.xCoord += 10; break;
+                        case Directions.Down: obj.yCoord += 10; break;
+                        case Directions.Top: obj.yCoord -= 10; break;
+                        default: break;
+                    }
+                    xLast = obj.xCoord;
+                    yLast = obj.yCoord;
+
+                }
+                else
+                {
+                    lastX = obj.xCoord;
+                    lastY = obj.yCoord;
+                    obj.xCoord = xLast;
+                    obj.yCoord = yLast;
+                    xLast = lastX;
+                    yLast = lastY;
+
+                }
+            }
+        }
+    }
+
+    public async Task GenerateTarget()
+    {
+        while (status)
+        {
+            target.XCoord = random.Next(29)*10;
+            target.YCoord = random.Next(29)*10;
+
+            while (targetStatus)
+            {
+                if (snake[0].xCoord == target.XCoord && snake[0].yCoord == target.YCoord)
+                {
+                    snake.Add(new SnakeBody());
+                    targetStatus = false;
+                    StateHasChanged();
+                }
+                await Task.Delay(200);
+            }
+
+            targetStatus = true;
+        }
+    }
+}
+
+<style scoped>
+    .board {
+        position:relative;
+        background-color: #87a72d;
+        width: 300px;
+        height: 300px;
+        border-radius: 0%;
+    }
+</style>
