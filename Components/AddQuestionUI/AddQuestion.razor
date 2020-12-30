@@ -1,0 +1,117 @@
+﻿@using blazor_Examples.Components.AddQuestionUI.Models
+
+    <div class="container btn-group-sm">
+        <input type="text" class="form-control" placeholder="Question name..." @bind=question.Name>
+        <br />
+        <h5>Add answers :</h5>
+        @foreach (var obj in question.Answers)
+        {
+            objIndex = question.Answers.IndexOf(obj);
+            <div class="input-group ">
+                <input type="text" @bind=obj.Name class="form-control form-check-inline" placeholder="Answer...">
+                <div class="form-check form-check-inline input-group-text">
+                    <input class="form-check-input" type="radio" name="@objIndex" @onchange="@((ChangeEventArgs __e) => obj.Status=true)" checked="@obj.Status.Equals(true)">
+                    <label class="form-check-label">True</label>
+                </div>
+                <div class="form-check form-check-inline input-group-text">
+                    <input class="form-check-input" type="radio" name="@objIndex" @onchange="@((ChangeEventArgs __e) => obj.Status=false)" checked="@obj.Status.Equals(false)">
+                    <label class="form-check-label">False</label>
+                </div>
+
+                @if (question.Answers.Count > 1)
+                {
+                    <span class="btn btn-danger form-inline" @onclick="@(() =>DeletAnswer(question.Answers.IndexOf(obj)))">-</span>
+                }
+            </div>
+            <br />
+
+        }
+        @if (question.Answers.Count < 5)
+        {
+            <span class="btn btn-info" @onclick=AddAnswer>Add Answer</span>
+        }
+        <span class="btn btn-info" @onclick=ClearAnswers>Clear Answers</span>
+
+        @if (CheckQuestion())
+        {
+            <span class="btn btn-danger" @onclick=AddNewQuestion>Add question</span>
+        }
+        else
+        {
+            <span class="btn btn-danger disabled">Add question</span>
+        }
+
+        <hr />
+        @if (questionList != null)
+        {
+            foreach (var obj in questionList)
+            {
+                <h5>@obj.Name</h5>
+                foreach (var answer in obj.Answers)
+                {
+                    <h6>@answer.Name | @answer.Status</h6>
+                }
+            }
+        }
+        <br />
+        <span class="btn btn-info" @onclick=ClearQuestions>Clear Questions</span>
+
+    </div>
+
+@code {
+    private List<Question> questionList = new List<Question>();
+    private Question question = new Question { Answers = new List<Answer> { new Answer() } };
+    private int objIndex;
+
+    private void AddAnswer()
+    {
+        if (question.Answers.Count < 6)
+        {
+            question.Answers.Add(new Answer());
+            StateHasChanged();
+        }
+    }
+
+    public void DeletAnswer(int index)
+    {
+        if (question.Answers.Count > 1)
+        {
+            question.Answers.RemoveAt(index);
+            StateHasChanged();
+        }
+    }
+
+    public void ClearAnswers()
+    {
+        question.Answers = new List<Answer> { new Answer() };
+    }
+
+    public bool CheckQuestion()
+    {
+        int status = 0;
+
+        foreach(var obj in question.Answers)
+        {
+            if (obj.Status == true)
+                status++;
+            if (string.IsNullOrEmpty(obj.Name))
+                return false;
+        }
+
+        if (status == question.Answers.Count || question.Answers.Count < 2 || string.IsNullOrEmpty(question.Name))
+            return false;
+
+        return true;
+    }
+
+    public void AddNewQuestion()
+    {
+        questionList.Add(question);
+        question = new Question { Answers = new List<Answer> { new Answer() } };
+    }
+
+    public void ClearQuestions()
+    {
+        questionList = new List<Question>();
+    }
+}
